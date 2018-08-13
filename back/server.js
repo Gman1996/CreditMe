@@ -22,10 +22,14 @@ mongoose
   .catch(err => console.log(err));
 
 // Payment Logic Routes
-const GetCustomer = require('./routes/api/getCustomer');
-const Verify = require('./routes/api/verify');
-const Recurring = require('./routes/api/recurrent-billing/createPayment');
-const BillCustomer = require('./routes/api/recurrent-billing/billCustomer');
+// One time payment
+const GetCustomer = require('./routes/api/one-time-payment/getCustomer');
+const Verify = require('./routes/api/one-time-payment/verify');
+
+//Recurrent Billing
+const CreateBillingPlan = require('./routes/api/recurrent-billing/createPayment');
+const GetCustomerRecurrent = require('./routes/api/recurrent-billing/getCustomer');
+const VerifyRecurrent = require('./routes/api/recurrent-billing/verify');
 
 // Navigational Routes
 const Register = require('./routes/api/register/register');
@@ -47,8 +51,9 @@ app.get('/', (req, res) => res.send('Hello World'));
 
 app.use('/api/customer', GetCustomer);
 app.use('/api/customer', Verify);
-app.use('/api/customer', Recurring);
-app.use('/api/customer', BillCustomer);
+app.use('/api/user', CreateBillingPlan);
+app.use('/api/user', GetCustomerRecurrent);
+app.use('/api/user', VerifyRecurrent);
 app.use('/api/user', Register);
 app.use('/api/user', Login);
 

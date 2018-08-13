@@ -6,19 +6,20 @@ router.get('/test', (req, res) => res.json({
   works: 'true'
 }));
 
-// @route   POST api/pay/login
+// @route   POST api/pay/verify
 // @desc    Make Payment / Returning Response
 // @access  Public
-
 router.post('/verify', (req, res) => {
+  let txref = req.query.txref;
+  let flwref = req.query.flwref;
   let data = JSON.parse(res.socket._httpMessage.req.body.resp);
-  let status = data.success;
-  let innerData = data.data.data;
+  let innerData = data.tx;
+  let status = innerData.status;
   let chargeResponseCode = innerData.chargeResponseCode;
   let currency = innerData.currency;
   let amount = innerData.amount;
-  //let amountCharged = innerData.amount;
-  if (status === true && chargeResponseCode === "00" && currency === "NGN") {
+  
+  if (status === 'successful' && chargeResponseCode === "00" && currency === "NGN") {
     return res.json({success: "Payment Completed"});
   }
   return res.status(400).json(data);
