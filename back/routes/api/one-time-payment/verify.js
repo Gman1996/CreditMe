@@ -18,9 +18,9 @@ router.post('/verify', (req, res) => {
   let chargeResponseCode = innerData.chargeResponseCode;
   let currency = innerData.currency;
   let amount = innerData.amount;
-  
+
   if (status === 'successful' && chargeResponseCode === "00" && currency === "NGN") {
-    return res.json({success: "Payment Completed"});
+    return res.json({success: true});
   }
   return res.status(400).json(data);
 });

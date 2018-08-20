@@ -49,11 +49,11 @@ const port = process.env.PORT || 5000;
 
 app.get('/', (req, res) => res.send('Hello World'));
 
-app.use('/api/customer', GetCustomer);
-app.use('/api/customer', Verify);
-app.use('/api/user', CreateBillingPlan);
-app.use('/api/user', GetCustomerRecurrent);
-app.use('/api/user', VerifyRecurrent);
+app.use('/api/one-time', GetCustomer);
+app.use('/api/one-time', Verify);
+app.use('/api/recurrent', CreateBillingPlan);
+app.use('/api/recurrent', GetCustomerRecurrent);
+app.use('/api/recurrent', VerifyRecurrent);
 app.use('/api/user', Register);
 app.use('/api/user', Login);
 
