@@ -9,3 +9,6 @@ This project is still in <b>development mode</b>. You can contribute to this pro
 <li>run "npm install"</li>
 <li>run "npm start"</li>
 <li>server running on port 5000</li>
+
+<li>In .env file, fill-in your database connection string(example: 'mongodb://localhost:27017')<br>
+ and your JWT secret key(example: 'secret')</li>
