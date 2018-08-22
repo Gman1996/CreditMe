@@ -4,9 +4,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../../config/keys');
 const passport = require('passport');
-const validateRegisterInput = require('../../../validation/Register');
-const isEmptyObj = require('../../../validation/is-empty');
+const isEmpty = require('../../../validation/is-empty');
 const CheckUnique = require('./checkUnique');
+const Validate = require('../../../validation/validate');
 
 // Get env Variables
 require('dotenv').config();
@@ -23,67 +23,112 @@ router.get('/test', (req, res) => res.json({ msg: 'Users Works' }));
 // @desc    Register user
 // @access  Public
 router.post('/register', (req, res) => {
-  const { errors, isValid } = validateRegisterInput(req.body);
+  const newUser = {
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    email: req.body.email,
+    secretKey: req.body.secretKey,
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword
+  };
 
-  // Check Validation
+  const rules = [
+    {
+      name: 'firstname',
+      required: true,
+      userInput: newUser.firstname
+    },
+    {
+      name: 'lastname',
+      required: true,
+      userInput: newUser.lastname
+    },
+    {
+      name: 'email',
+      required: true,
+      userInput: newUser.email
+    },
+    {
+      name: 'secretKey',
+      required: true,
+      userInput: newUser.secretKey
+    },
+    {
+      name: 'password',
+      required: true,
+      min: 6,
+      userInput: newUser.password
+    },
+    {
+      name: 'confirmPassword',
+      required: true,
+      userInput: newUser.confirmPassword
+    }
+  ]
+
+  let validate = new Validate(rules);
+  const { errors, isValid } = validate.checkInput();
+
   if (!isValid) {
-    return res.status(400).json(errors);
+    const formatedErrors = {
+      'firstname': errors['firstname'],
+      'lastname': errors['lastname'],
+      'email': errors['email'],
+      'invalidEmail': errors['invalidEmail'],
+      'secretKey': errors['secretKey'],
+      'password': errors['password'],
+      'confirmPassword': errors['confirmPassword']
+    };
+    return res.status(400).json({ formatedErrors });
   }
 
   async function confirmRegistration(){
     // Create new class object
-    let Check = new CheckUnique(req.body.email, req.body.secretKey);
+    const Check = new CheckUnique(newUser.email, newUser.secretKey);
 
     await Check.checkSecretKey();
     await Check.checkEmail();
 
-    const rules = {
+    const uniqueRules = {
       secretKey: {value: Check.secretKeyIsFound()},
       email: {value: Check.emailisFound()}
     }
 
-    handleErrors(rules);
+    handleUniqueErrors(uniqueRules);
+  }
 
-    if(isEmptyObj(errors)){
-      save();
+  confirmRegistration();
+
+  let handleUniqueErrors = (rules)=>{
+    let errors = {};
+    if(rules.email.value){
+      errors.emailexists = 'Email already exists';
+      return res.status(400).json(errors);
+    }
+
+    if(rules.secretKey.value){
+      errors.secretKeyexists = 'Secret Key is being used by another user';
+      return res.status(400).json(errors);
+    }
+
+    if(isEmpty(errors)){
+      save(newUser);
     }
   }
-    confirmRegistration();
 
-    let handleErrors = (rules)=>{
-      if(rules.secretKey.value){
-        errors.secretKeyexists = 'Secret Key is being used by another user';
-        return res.status(400).json(errors);
-      }
+  let save = (newUser) =>{
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(newUser.password, salt, (err, hash) => {
+        if (err) throw err;
 
-      if(rules.email.value){
-        errors.emailexists = 'Email already exists';
-        return res.status(400).json(errors);
-      }
-    }
-
-    let save = () =>{
-      const newUser = new User({
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        email: req.body.email,
-        secretKey: req.body.secretKey,
-        password: req.body.password,
-        password2: req.body.password2
+        newUser.password = hash;
+        new User(newUser)
+          .save()
+          .then(user => res.json(user))
+          .catch(err => console.log(err));
       });
-
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-
-          newUser.password = hash;
-          newUser
-            .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
-        });
-      });
-    }
+    });
+  }
 });
 
 // @route   GET api/user/current

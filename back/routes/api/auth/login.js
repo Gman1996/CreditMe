@@ -4,21 +4,43 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const keys = require('../../../config/keys');
 const passport = require('passport');
-const validateLoginInput = require('../../../validation/Login');
+const Validate = require('../../../validation/validate');
+const isEmpty = require('../../../validation/is-empty');
+
+// Load User model
+const User = require('../../../models/User');
 
 // @route   GET api/user/login
 // @desc    Login User / Returning JWT Token
 // @access  Public
 router.post('/login', (req, res) => {
-  const { errors, isValid } = validateLoginInput(req.body);
-
-  // Check Validation
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
-
   const email = req.body.email;
   const password = req.body.password;
+
+  const rules = [
+    {
+      name: 'email',
+      required: true,
+      userInput: email
+    },
+    {
+      name: 'Login password',
+      required: true,
+      userInput: password
+    }
+  ]
+
+  const validate = new Validate(rules);
+  const { errors, isValid } = validate.checkInput();
+
+  if (!isValid) {
+    let formatedErrors = {
+      'email': errors['email'],
+      'invalidEmail': errors['invalidEmail'],
+      'Login password': errors['Login password']
+    };
+    return res.status(400).json({ formatedErrors });
+  }
 
   // Find user by email
   User.findOne({ email }).then(user => {
