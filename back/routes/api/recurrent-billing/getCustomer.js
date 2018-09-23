@@ -12,7 +12,7 @@ router.get('/test-recurring', (req, res) => res.json({
 // @route   get api/recurrent-billing/createPayment
 // @desc    Create Payment Plan / Get plan id
 // @access  Public
-router.get('/create-payment ', (req, res) => {
+router.get('/create-payment', (req, res) => {
   const headers = {
     headers: {
       'Content-Type': 'application/json'

@@ -1,0 +1,221 @@
+.burger-parent {
+  display: none;
+}
+
+.Creditme-logo {
+  background-image: url("../images/creditme.gif");
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100px;
+  height: 70px;
+}
+
+.nav-bar {
+  font-size: 14px;
+  font-weight: bold;
+  display: grid;
+  height: 80px;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  border: 1px solid lightgray;
+}
+
+.nav-child, .nav-child-logo {
+  margin: auto 0;
+}
+
+.nav-child a:hover {
+  padding: 10px;
+  color: #C84091;
+  border-left: 1px solid black;
+}
+
+.nav-nested {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.rave-info {
+  font-size: 14px;
+  color: burlywood;
+}
+
+.rave-info a {
+  text-decoration: underline;
+}
+
+.mycontainer {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.onetime {
+  transition: all .6s;
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/onetime.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 89vh;
+  text-align: center;
+  padding: 44% 0;
+}
+
+.recurrent {
+  transition: all .6s;
+  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/recurrent.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-align: center;
+  height: 89vh;
+  padding: 44% 0;
+}
+
+.hover-title:hover {
+  font-size: 30px;
+}
+
+.hover-title {
+  width: 100%;
+  color: white;
+  font-size: 28px;
+  height: 100%;
+  margin: auto 0;
+}
+
+.footer {
+  text-align: center;
+  background-color: #fff;
+  padding: 50px;
+}
+
+.footer p {
+  color: black;
+  font-size: 15px;
+  padding: 10px;
+}
+
+.mybutton {
+  font-size: 60px;
+  color: #4CAF50;
+}
+
+.mybutton:hover {
+  color: mediumpurple;
+}
+
+.input100 {
+  height: 40px;
+}
+
+.login100-form-title {
+  font-size: 20px;
+  padding: 10px;
+}
+
+.wrap-login100 {
+  padding: 40px;
+}
+
+.error-message{
+  color: firebrick;
+  font-size: 12px;
+}
+
+/** Media Queries **/
+
+@media (max-width: 920px) {
+  .nav-child a {
+    font-size: 12.5px;
+  }
+}
+
+@media (max-width: 836px) {
+  .burger {
+    height: 5px;
+    border-bottom: #333333 4px solid;
+    width: 35px;
+    margin: 3px 10px;
+  }
+  .burger-parent {
+    display: block;
+    padding: 15px;
+  }
+  .nav-bar {
+    display: inline-block;
+  }
+  .nav-nested {
+    display: inline-block;
+    background-color: #fcf9f9;
+    margin-top: 19px;
+  }
+  .nav-child {
+    padding: 20px;
+    border-bottom: 1px solid black;
+  }
+  .nav-child a {
+    font-size: 15px;
+    font-weight: bold;
+  }
+  .nav-child-logo {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: 50px;
+    justify-items: right;
+  }
+  .nav-child-logo :nth-child(1) {
+    padding: 10px;
+  }
+  .limiter, .mycontainer {
+    margin-top: 20px;
+  }
+  .symbol-input100 {
+    margin-top: 100px;
+  }
+}
+
+@media (max-width: 750px) {
+  .hover-title {
+    font-size: 16px;
+  }
+  .recurrent {
+    padding: 75% 0;
+  }
+  .onetime {
+    padding: 75% 0;
+  }
+  .hover-title:hover {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 500px) {
+  .mycontainer {
+    display: block;
+    height: auto;
+  }
+  .input100 {
+    font-size: 14px;
+    padding: 0 10px;
+  }
+  #modal {
+    width: 90%;
+    margin: -250px 0 0 -46%;
+  }
+  .symbol-input100 {
+    display: none;
+  }
+  .footer-email {
+    font-size: 12px;
+  }
+}

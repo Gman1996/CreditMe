@@ -51,6 +51,9 @@ const FetchSubscribers = require('./routes/api/profile/recurrent/subscribers/fet
 const CancelSubscribers = require('./routes/api/profile/recurrent/subscribers/cancelSubscribers');
 const ActivateSubscribers = require('./routes/api/profile/recurrent/subscribers/activateSubscribers');
 
+//Verify BVN
+const VerifyBVN = require('./routes/api/bvn/bvnValidation');
+
 // Passport middleware
 app.use(passport.initialize());
 
@@ -84,5 +87,6 @@ app.use('/api/user', ListSubscribers);
 app.use('/api/user', FetchSubscribers);
 app.use('/api/user', CancelSubscribers);
 app.use('/api/user', ActivateSubscribers);
+app.use('/api/bvn', VerifyBVN);
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
